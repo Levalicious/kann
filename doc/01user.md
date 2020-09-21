@@ -47,14 +47,14 @@ kann_t *model_gen(int n_in, int n_out, int n_hidden_neurons)
 {
 	kad_node_t *t;
 	t = kann_layer_input(n_in);
-	t = kann_layer_linear(t, n_hidden_neurons);
+	t = kann_layer_dense(t, n_hidden_neurons);
 	t = kad_relu(t);
 	t = kann_layer_cost(t, n_out, KANN_C_CEB);
 	return kann_new(t, 0);
 }
 ```
 Here `kann_layer_input()` sets an input node in the computational graph.
-`kann_layer_linear()` adds a linear transformation layer to the graph and
+`kann_layer_dense()` adds a linear transformation layer to the graph and
 `kad_relu()` sets the activation function. `kann_layer_cost()` adds an output
 layer and a binary cross-entropy cost (specified by `KANN_C_CEB`). Finally
 `kann_new()` generates the neural network.
@@ -71,7 +71,7 @@ kann_t *model_gen_mnist(int n_h_flt, int n_h_fc)
 	t = kad_relu(kann_layer_conv2d(t, n_h_flt, 3, 3, 1, 0));
 	t = kann_layer_max2d(t, 2, 2, 2, 0);
 	t = kann_layer_dropout(t, 0.2f);
-	t = kann_layer_linear(t, n_h_fc);
+	t = kann_layer_dense(t, n_h_fc);
 	t = kad_relu(t);
 	return kann_new(kann_layer_cost(t, 10, KANN_C_CEM), 0);
 }
